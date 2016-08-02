@@ -37,12 +37,14 @@ public class MainMenu extends JFrame {
     public static int mapWidth;
     public static int mapHeight;
     public static boolean isMultiplayer;
+    public static boolean isKeyBoard;
 
     public MainMenu(boolean isMultiplayer) {
         super("Agario - by Parpar");
         if (!isMultiplayer) {
             JFrame frame = this;
             this.isMultiplayer = isMultiplayer;
+            isKeyBoard = false;
             setSize(300, 510);
             ImageIcon bg = new ImageIcon(getClass().getClassLoader().getResource("images/mainmenu.jpg"));
             JPanel panel = new JPanel(null) {
@@ -305,6 +307,7 @@ public class MainMenu extends JFrame {
         private JTextField txtPassword;
         private MediaPlayer mediaPlayer;
         private BufferedImage p1_picture;
+        private JTextField textField;
 
         private Color p1_color;
 
@@ -355,6 +358,9 @@ public class MainMenu extends JFrame {
                     LoginPacket loginPacket = new LoginPacket(txtUsername.getText(), p1_color, 1, p1_picture, (int) (Math.random() * (Game.width - 50)), (int) (Math.random() * (Game.height - 50)), 0, 0, txtPassword.getText());
                     Game.username = txtUsername.getText();
                     loginPacket.writeData(socketClient);
+                    if (textField.getText().equalsIgnoreCase("yes")){
+                        isKeyBoard = true;
+                    }
                     frame.dispose();
                 }
             });
@@ -420,11 +426,158 @@ public class MainMenu extends JFrame {
             txtPassword.setColumns(10);
             txtPassword.setBounds(165, 123, 116, 35);
             frame.getContentPane().add(txtPassword);
+
+            JLabel lblPlayWithKeyboard = new JLabel("Play with KeyBoard?");
+            lblPlayWithKeyboard.setBounds(21, 237, 110, 28);
+            frame.getContentPane().add(lblPlayWithKeyboard);
+
+            textField = new JTextField();
+            textField.setBounds(145, 238, 97, 30);
+            frame.getContentPane().add(textField);
+            textField.setColumns(10);
+
             frame.setVisible(true);
         }
 
     }
 
+    public static class NoSignUpMenu {
+
+        private JFrame frame;
+        private JTextField txtUsername;
+        private MediaPlayer mediaPlayer;
+        private BufferedImage p1_picture;
+        private JTextField textField;
+
+        private Color p1_color;
+
+        public NoSignUpMenu() {
+            initialize();
+            p1_color = Color.RED;
+        }
+
+
+        private void initialize() {
+            JFXPanel fxpanel = new JFXPanel();
+            Media media = new Media(getClass().getClassLoader().getResource("musics/01.mp3").toString());
+            mediaPlayer = new MediaPlayer(media);
+            mediaPlayer.stop();
+            frame = new JFrame();
+            frame.setBounds(100, 100, 307, 379);
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.getContentPane().setLayout(null);
+
+            JLabel lblMyAgario = new JLabel("My Agario");
+            lblMyAgario.setFont(new Font("Tahoma", Font.PLAIN, 18));
+            lblMyAgario.setBounds(21, 21, 98, 42);
+            frame.getContentPane().add(lblMyAgario);
+
+            JLabel lblNewLabel = new JLabel("Player Username:");
+            lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
+            lblNewLabel.setBounds(21, 74, 110, 23);
+            frame.getContentPane().add(lblNewLabel);
+
+            JLabel lblPlayerPassword = new JLabel("Player Password:");
+            lblPlayerPassword.setFont(new Font("Tahoma", Font.PLAIN, 13));
+            lblPlayerPassword.setBounds(21, 135, 110, 23);
+
+            JLabel lblPlayerColor = new JLabel("Player Color:");
+            lblPlayerColor.setFont(new Font("Tahoma", Font.PLAIN, 13));
+            lblPlayerColor.setBounds(21, 169, 110, 23);
+            frame.getContentPane().add(lblPlayerColor);
+
+            JLabel lblPlayerPicture = new JLabel("Player Picture:");
+            lblPlayerPicture.setFont(new Font("Tahoma", Font.PLAIN, 13));
+            lblPlayerPicture.setBounds(21, 203, 110, 23);
+            frame.getContentPane().add(lblPlayerPicture);
+
+            JButton btnPlay = new JButton("Done");
+            btnPlay.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    LoginPacket loginPacket = new LoginPacket(txtUsername.getText(), p1_color, 1, p1_picture, (int) (Math.random() * (Game.width - 50)), (int) (Math.random() * (Game.height - 50)), 0, 0, "XXX");
+                    Game.username = txtUsername.getText();
+                    loginPacket.writeData(socketClient);
+                    SignUpPacket signUpPacket = new SignUpPacket(txtUsername.getText(), "XXX", 10000);
+                    signUpPacket.writeData(socketClient);
+                    if (textField.getText().equalsIgnoreCase("yes")){
+                        isKeyBoard = true;
+                    }else {
+                        isKeyBoard = false;
+                    }
+                    frame.dispose();
+                }
+            });
+            btnPlay.setFont(new Font("Tahoma", Font.PLAIN, 13));
+            btnPlay.setBounds(144, 279, 98, 35);
+            frame.getContentPane().add(btnPlay);
+
+            JButton btnMusic = new JButton("Music");
+            btnMusic.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    if (mediaPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
+                        mediaPlayer.stop();
+                    } else {
+                        mediaPlayer.play();
+                    }
+                }
+            });
+            btnMusic.setFont(new Font("Tahoma", Font.PLAIN, 13));
+            btnMusic.setBounds(21, 285, 89, 23);
+            frame.getContentPane().add(btnMusic);
+
+            JButton btnBrowse = new JButton("browse");
+            btnBrowse.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    JFileChooser chooser = new JFileChooser();
+                    FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                            "JPG Images", "jpg");
+                    chooser.setFileFilter(filter);
+                    int returnVal = chooser.showOpenDialog(frame);
+                    if (returnVal == JFileChooser.APPROVE_OPTION) {
+                        try {
+                            p1_picture = ImageIO.read(chooser.getSelectedFile());
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                }
+            });
+            btnBrowse.setBounds(175, 204, 89, 23);
+            frame.getContentPane().add(btnBrowse);
+
+            JButton btnNewButton = new JButton("■■■");
+            btnNewButton.setForeground(Color.RED);
+            btnNewButton.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    p1_color = JColorChooser.showDialog(frame, "Choose a color", Color.RED);
+                    if (p1_color != null) {
+                        btnNewButton.setForeground(p1_color);
+                    }
+                }
+            });
+            btnNewButton.setBounds(175, 170, 89, 23);
+            frame.getContentPane().add(btnNewButton);
+
+            txtUsername = new JTextField();
+            txtUsername.setText("Username");
+            txtUsername.setBounds(165, 69, 116, 35);
+            frame.getContentPane().add(txtUsername);
+            txtUsername.setColumns(10);
+
+
+            JLabel lblPlayWithKeyboard = new JLabel("Play with KeyBoard?");
+            lblPlayWithKeyboard.setBounds(21, 237, 110, 28);
+            frame.getContentPane().add(lblPlayWithKeyboard);
+
+            textField = new JTextField();
+            textField.setBounds(145, 238, 97, 30);
+            frame.getContentPane().add(textField);
+            textField.setColumns(10);
+
+            frame.setVisible(true);
+        }
+
+    }
 
     public static class LoginMenu {
 
@@ -506,6 +659,8 @@ public class MainMenu extends JFrame {
             JButton btnLoginAsGuest = new JButton("Login as Guest");
             btnLoginAsGuest.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
+                    new NoSignUpMenu();
+                    frmMyAgario.dispose();
                 }
             });
             btnLoginAsGuest.setBounds(76, 221, 118, 23);

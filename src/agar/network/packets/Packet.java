@@ -11,7 +11,7 @@ public abstract class Packet {
 
     public static enum PacketTypes {
         INVALID(-1), LOGIN(00), DISCONNECT(01), MOVE(02), DISCOVERY(03), FOOD(04), SAW(05), POWERUP(06), SPLIT(07), POWERUPSTARTGODMODE(55), POWERUPSTARTSPEEDUP(66), POWERUPSTARTJOINALL(77),
-        WIN(12), LOSE(13), SIGNUP(14), HOST(15);
+        WIN(12), LOSE(13), SIGNUP(14), HOST(15),CUSTOMPOWERUP(88);
 
         private int packetID;
 

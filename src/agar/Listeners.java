@@ -2,6 +2,7 @@ package agar;
 
 import agar.gameobjects.ObjectType;
 import agar.network.packets.*;
+import sun.applet.Main;
 
 import java.awt.event.*;
 
@@ -165,6 +166,24 @@ public class Listeners implements KeyListener, MouseListener, MouseMotionListene
             }
 
         } else {
+            if (MainMenu.isKeyBoard) {
+                if (e.getKeyCode() == KeyEvent.VK_UP) {
+                    MovePacket movePacket = new MovePacket(game.getUsername(), game.getPlayerMPs().get(0).getCircles().get(0).getX(), game.getPlayerMPs().get(0).getCircles().get(0).getY() - 10);
+                    movePacket.writeData(Game.socketClient);
+                }
+                if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+                    MovePacket movePacket = new MovePacket(game.getUsername(), game.getPlayerMPs().get(0).getCircles().get(0).getX(), game.getPlayerMPs().get(0).getCircles().get(0).getY() + 10);
+                    movePacket.writeData(Game.socketClient);
+                }
+                if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+                    MovePacket movePacket = new MovePacket(game.getUsername(), game.getPlayerMPs().get(0).getCircles().get(0).getX() + 10, game.getPlayerMPs().get(0).getCircles().get(0).getY());
+                    movePacket.writeData(Game.socketClient);
+                }
+                if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+                    MovePacket movePacket = new MovePacket(game.getUsername(), game.getPlayerMPs().get(0).getCircles().get(0).getX() - 10, game.getPlayerMPs().get(0).getCircles().get(0).getY());
+                    movePacket.writeData(Game.socketClient);
+                }
+            }
             if (e.getKeyCode() == KeyEvent.VK_T && game.getPlayerMPs().get(0).getPowerUp3() != null) {
                 if (game.getPlayerMPs().get(0).getPowerUp3().getType() == ObjectType.SPEED_UP) {
                     PowerUpStartPacketSPEEDUP powerUpStartPacketSPEEDUP = new PowerUpStartPacketSPEEDUP(game.getUsername());
@@ -210,15 +229,17 @@ public class Listeners implements KeyListener, MouseListener, MouseMotionListene
 
             }
         } else {
-            if (e.getButton() == MouseEvent.BUTTON1) {
-                MovePacket movePacket = new MovePacket(game.getUsername(), e.getX(), e.getY());
-                movePacket.writeData(Game.socketClient);
-            } else if (e.getButton() == MouseEvent.BUTTON2) {
-                SplitPacket splitPacket = new SplitPacket(game.getUsername());
-                splitPacket.writeData(Game.socketClient);
-            } else if (e.getButton() == MouseEvent.BUTTON3 && game.getPlayerMPs().get(0).getPowerUp2() != null) {
-                PowerUpStartPacketGODMODE powerUpStartPacket = new PowerUpStartPacketGODMODE(game.getUsername());
-                powerUpStartPacket.writeData(Game.socketClient);
+            if (!MainMenu.isKeyBoard) {
+                if (e.getButton() == MouseEvent.BUTTON1) {
+                    MovePacket movePacket = new MovePacket(game.getUsername(), e.getX(), e.getY());
+                    movePacket.writeData(Game.socketClient);
+                } else if (e.getButton() == MouseEvent.BUTTON2) {
+                    SplitPacket splitPacket = new SplitPacket(game.getUsername());
+                    splitPacket.writeData(Game.socketClient);
+                } else if (e.getButton() == MouseEvent.BUTTON3 && game.getPlayerMPs().get(0).getPowerUp2() != null) {
+                    PowerUpStartPacketGODMODE powerUpStartPacket = new PowerUpStartPacketGODMODE(game.getUsername());
+                    powerUpStartPacket.writeData(Game.socketClient);
+                }
             }
         }
     }

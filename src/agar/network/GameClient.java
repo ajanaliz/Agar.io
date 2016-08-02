@@ -14,6 +14,7 @@ import sun.rmi.runtime.Log;
 
 import javax.swing.*;
 import java.awt.*;
+import java.lang.reflect.Constructor;
 import java.net.InetAddress;
 
 
@@ -229,8 +230,16 @@ public class GameClient implements Runnable {
                 packet = new HostPacket(data);
                 handleHostPacket((HostPacket) packet);
                 break;
+            case CUSTOMPOWERUP:
+                packet = new CustomPowerUp(data);
+                handleCustomPowerUp((CustomPowerUp) packet);
+                break;
         }
     }
+
+    private void handleCustomPowerUp(CustomPowerUp packet) {
+    }
+
 
     private void handleHostPacket(HostPacket packet) {
         game.setHeight(packet.getMapHeight());
