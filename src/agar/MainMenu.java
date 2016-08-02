@@ -499,7 +499,7 @@ public class MainMenu extends JFrame {
                     loginPacket.writeData(socketClient);
                     SignUpPacket signUpPacket = new SignUpPacket(txtUsername.getText(), "XXX", 10000);
                     signUpPacket.writeData(socketClient);
-                    if (textField.getText().equalsIgnoreCase("yes")){
+                    if (textField.getText().trim().equalsIgnoreCase("yes")){
                         isKeyBoard = true;
                     }else {
                         isKeyBoard = false;

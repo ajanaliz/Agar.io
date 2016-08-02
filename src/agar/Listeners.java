@@ -167,20 +167,21 @@ public class Listeners implements KeyListener, MouseListener, MouseMotionListene
 
         } else {
             if (MainMenu.isKeyBoard) {
+                System.out.println(e.getKeyChar());
                 if (e.getKeyCode() == KeyEvent.VK_UP) {
-                    MovePacket movePacket = new MovePacket(game.getUsername(), game.getPlayerMPs().get(0).getCircles().get(0).getX(), game.getPlayerMPs().get(0).getCircles().get(0).getY() - 10);
+                    MovePacket movePacket = new MovePacket(game.getUsername(), Game.getPlayerMPs().get(0).getCircles().get(0).getX(), Game.getPlayerMPs().get(0).getCircles().get(0).getY() - 10);
                     movePacket.writeData(Game.socketClient);
                 }
                 if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-                    MovePacket movePacket = new MovePacket(game.getUsername(), game.getPlayerMPs().get(0).getCircles().get(0).getX(), game.getPlayerMPs().get(0).getCircles().get(0).getY() + 10);
+                    MovePacket movePacket = new MovePacket(game.getUsername(), Game.getPlayerMPs().get(0).getCircles().get(0).getX(), Game.getPlayerMPs().get(0).getCircles().get(0).getY() + 10);
                     movePacket.writeData(Game.socketClient);
                 }
                 if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-                    MovePacket movePacket = new MovePacket(game.getUsername(), game.getPlayerMPs().get(0).getCircles().get(0).getX() + 10, game.getPlayerMPs().get(0).getCircles().get(0).getY());
+                    MovePacket movePacket = new MovePacket(game.getUsername(), Game.getPlayerMPs().get(0).getCircles().get(0).getX() + 10, Game.getPlayerMPs().get(0).getCircles().get(0).getY());
                     movePacket.writeData(Game.socketClient);
                 }
                 if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-                    MovePacket movePacket = new MovePacket(game.getUsername(), game.getPlayerMPs().get(0).getCircles().get(0).getX() - 10, game.getPlayerMPs().get(0).getCircles().get(0).getY());
+                    MovePacket movePacket = new MovePacket(game.getUsername(), Game.getPlayerMPs().get(0).getCircles().get(0).getX() - 10, Game.getPlayerMPs().get(0).getCircles().get(0).getY());
                     movePacket.writeData(Game.socketClient);
                 }
             }
